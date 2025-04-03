@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="logo.svg">
+    <title>Inconnu</title>
+    <style>
+        :root {
+            --neon-green: #0f0;
+            --neon-purple: #A179DC;
+            --neon-glow: 0 0 10px rgba(0, 255, 0, 0.8);
+        }
+        
+        body {
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+            height: 100vh;
+            background-color: #111;
+            overflow: hidden;
+            perspective: 1000px;
+        }
+        
+        .panel {
+            width: 100%;
+            height: 10vh;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(0, 0, 0, 0.5));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            position: relative;
+            opacity: 0; 
+            border-radius: 10px;
+            animation: panelSlideIn 1s forwards; 
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(5px);
+            z-index: 10;
+        }
+        
+        .top-panel {
+            animation-delay: 0s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0 20px;
+            position: relative;
+        }
+        
+        .bottom-panel {
+            animation-delay: 1s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .center-panel {
+            flex: 1;
+            width: 100%;
+            background-color: #191919;
+            position: relative;
+            overflow: hidden;
+            opacity: 0;
+            border-radius: 15px;
+            animation: fadeIn 1s forwards;
+            animation-delay: 1s;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.6);
+            transform-style: preserve-3d;
+        }
+        
+        .icon-text {
+            display: flex;
+            align-items: center;
+            opacity: 0;
+            animation: fadeInText 1s forwards;
+            animation-delay: 1.5s;
+            margin-right: auto;
+            margin-left: 10px;
+            margin-top: 3px;
+            flex-shrink: 0;
+            transition: all 0.3s ease;
+        }
+        
+        .icon-text:hover {
+            transform: scale(1.05);
+        }
+        
+        .icon-text img {
+            width: 50px;
+            height: 50px;
+            margin-right: 10px;
+            margin-left: 10px;
+            margin-top: 3px;
+            transition: all 0.3s ease;
+            filter: drop-shadow(var(--neon-glow));
+        }
+        
+        .icon-text:hover img {
+            filter: drop-shadow(0 0 15px var(--neon-purple));
+        }
+        
+        .icon-text span {
+            font-size: 27px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            background: linear-gradient(135deg, #ffffff, #defadf);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 0 0 10px rgba(0, 255, 157, 0.5);
+            position: relative;
+        }
+        
+        .icon-text span::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: -2px;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #00ff9d, #00b8ff, transparent);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .icon-text:hover span::after {
+            opacity: 1;
+        }
+        
+        @keyframes panelSlideIn {
+            0% {
+                transform: translateY(-100%);
+                opacity: 0;
+            }
+            100% {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+        
+        @keyframes fadeIn {
+            0% {
+                opacity: 0;
+                transform: translateZ(50px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateZ(0);
+            }
+        }
+        
+        @keyframes fadeInText {
+            0% {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        
+        @keyframes fadeInButton {
+            0% {
+                opacity: 0;
+                transform: scale(0.8) rotateY(90deg);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1) rotateY(0);
+            }
+        }
+        
+		.button {
+			width: 45px;
+			height: 45px;
+			background-size: contain;
+			background-repeat: no-repeat;
+			background-position: center;
+			cursor: pointer;
+			border-radius: 0;
+			border: none;
+			transition: all 0.3s ease;
+			opacity: 0;
+			animation: fadeInButton 0.5s forwards;
+			animation-delay: 2s;
+			margin-left: 5px;
+			margin-right: 5px;
+			position: relative;
+			overflow: visible;
+			box-shadow: none;
+		}
+
+		.button:hover {
+			transform: scale(1.15) translateZ(10px);
+			filter: 
+				drop-shadow(0 0 2px var(--neon-green))
+				drop-shadow(0 0 4px var(--neon-green))
+				drop-shadow(0 0 6px var(--neon-green));
+			border-color: transparent;
+		}
+        
+        .button::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at center, rgba(0, 255, 0, 0.3), transparent 70%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .button:hover::after {
+            opacity: 1;
+        }
+        
+        .tooltip {
+            position: fixed;
+            display: none;
+            border: 2px solid var(--neon-green);
+            pointer-events: none;
+            transition: all 0.2s ease;
+            border-radius: 15px;
+            background-color: rgba(0, 0, 0, 0.7);
+            box-shadow: 0 0 20px rgba(0, 255, 0, 0.6);
+            z-index: 1000;
+            transform: translateZ(20px);
+            opacity: 0;
+            backdrop-filter: blur(2px);
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+            padding: 10px;
+            max-width: 90vw;
+            max-height: 90vh;
+        }
+        
+        .tooltip.show {
+            display: block;
+            animation: tooltipFadeIn 0.2s forwards;
+        }
+        
+        .tooltip.hide {
+            animation: tooltipFadeOut 0.2s forwards;
+        }
+        
+        @keyframes tooltipFadeIn {
+            0% {
+                opacity: 0;
+                transform: scale(0.8) translateZ(0);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1) translateZ(20px);
+            }
+        }
+        
+        @keyframes tooltipFadeOut {
+            0% {
+                opacity: 1;
+                transform: scale(1) translateZ(20px);
+            }
+            100% {
+                opacity: 0;
+                transform: scale(0.8) translateZ(0);
+                display: none;
+            }
+        }
+        
+        .matrix {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            font-family: monospace;
+            color: var(--neon-green);
+            white-space: nowrap;
+            overflow: hidden;
+            font-size: 20px;
+            background-color: #0a0a0a;
+            transform-style: preserve-3d;
+            transition: transform 0.3s ease-out;
+            will-change: transform;
+        }
+        
+        .parallax-layer {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            transition: transform 0.3s ease-out;
+            will-change: transform;
+        }
+        
+        @media (max-width: 768px) {
+            .panel {
+                height: 8vh;
+            }
+            
+            .icon-text img {
+                width: 40px;
+                height: 40px;
+            }
+            
+            .icon-text span {
+                font-size: 20px;
+            }
+            
+            .button {
+                width: 40px;
+                height: 40px;
+                margin: 0 3px;
+            }
+            
+            .tooltip {
+                max-width: 80vw;
+                max-height: 80vh;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .icon-text span {
+                display: none;
+            }
+            
+            .button {
+                width: 35px;
+                height: 35px;
+            }
+            
+            .bottom-panel {
+                justify-content: space-around;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="parallax-layer" id="parallax-layer"></div>
+    
+    <div class="panel top-panel" id="top-panel">
+        <div class="icon-text" id="icon-text">
+            <a href="https://ru.wikipedia.org/wiki/C_Sharp">
+                <img src="logo.svg" alt="Main Icon">
+            </a>
+            <span>Inconnu</span>
+        </div>
+    </div>
+    
+    <div class="center-panel" id="center-panel">
+        <canvas id="matrixCanvas"></canvas>
+    </div>
+    
+    <div class="panel bottom-panel" id="bottom-panel"></div>
+    <div class="tooltip" id="imageOnCursor"></div>
+
+    <script>
+        const topPanel = document.getElementById('top-panel');
+        const bottomPanel = document.getElementById('bottom-panel');
+        const centerPanel = document.getElementById('center-panel');
+        const imageOnCursor = document.getElementById('imageOnCursor');
+        const matrixCanvas = document.getElementById("matrixCanvas");
+        const ctx = matrixCanvas.getContext("2d");
+        const parallaxLayer = document.getElementById('parallax-layer');
+        
+        function resizeCanvas() {
+            matrixCanvas.width = window.innerWidth;
+            matrixCanvas.height = window.innerHeight * 0.8;
+        }
+        
+        resizeCanvas();
+        window.addEventListener('resize', resizeCanvas);
+
+        let mouseX = window.innerWidth / 2;
+        let mouseY = window.innerHeight / 2;
+        let targetX = mouseX;
+        let targetY = mouseY;
+        
+        let isTooltipVisible = false;
+        let currentTooltipButton = null;
+        
+        function updateTooltipPosition(event) {
+            if (!isTooltipVisible) return;
+            
+            const tooltipWidth = imageOnCursor.offsetWidth;
+            const tooltipHeight = imageOnCursor.offsetHeight;
+            const offset = 15;
+            
+            let tooltipX = event.clientX + offset;
+            let tooltipY = event.clientY + offset;
+
+            if (tooltipX + tooltipWidth > window.innerWidth) {
+                tooltipX = event.clientX - tooltipWidth - offset;
+            }
+            
+            if (tooltipY + tooltipHeight > window.innerHeight) {
+                tooltipY = event.clientY - tooltipHeight - offset;
+            }
+
+            tooltipX = Math.max(5, Math.min(tooltipX, window.innerWidth - tooltipWidth - 5));
+            tooltipY = Math.max(5, Math.min(tooltipY, window.innerHeight - tooltipHeight - 5));
+
+            imageOnCursor.style.left = `${tooltipX}px`;
+            imageOnCursor.style.top = `${tooltipY}px`;
+        }
+        
+        document.addEventListener('mousemove', (event) => {
+            targetX = event.clientX;
+            targetY = event.clientY;
+            updateTooltipPosition(event);
+        });
+
+        function lerp(start, end, t) {
+            return start * (1 - t) + end * t;
+        }
+
+        function updateParallax() {
+            mouseX = lerp(mouseX, targetX, 0.1);
+            mouseY = lerp(mouseY, targetY, 0.1);
+            
+            const centerX = window.innerWidth / 2;
+            const centerY = window.innerHeight / 2;
+
+            const normX = (mouseX - centerX) / centerX;
+            const normY = (mouseY - centerY) / centerY;
+            
+            const parallaxX = normX * 10;
+            const parallaxY = normY * 5;
+            const rotationY = normX * 1.5;
+            
+            topPanel.style.transform = `translateY(0) translateX(${parallaxX}px) rotateY(${rotationY}deg)`;
+            bottomPanel.style.transform = `translateY(0) translateX(${parallaxX}px) rotateY(${rotationY}deg)`;
+            centerPanel.style.transform = `translateX(${parallaxX}px) rotateY(${rotationY}deg)`;
+            
+            parallaxLayer.style.transform = `translateX(${parallaxX * 0.1}px) translateY(${parallaxY * 0.1}px)`;
+            
+            const matrixMoveX = normX * 15;
+            const matrixMoveY = normY * 8;
+            const matrixRotateY = normX * 3;
+            const matrixRotateX = -normY * 1.5;
+            
+            matrixCanvas.style.transform = `
+                translateX(${matrixMoveX}px) 
+                translateY(${matrixMoveY}px) 
+                rotateY(${matrixRotateY}deg) 
+                rotateX(${matrixRotateX}deg)
+            `;
+            
+            requestAnimationFrame(updateParallax);
+        }
+        updateParallax();
+
+        function isURL(str) {
+            return /^(https?:\/\/)/.test(str);
+        }
+
+        function getImagePath(path) {
+            return isURL(path) ? path : `./${path}`;
+        }
+
+        function loadButtons() {
+            fetch("buttons.json")
+                .then(response => response.json())
+                .then(data => {
+                    data.forEach((button, index) => {
+                        const btn = document.createElement("div");
+                        btn.classList.add("button");
+                        btn.style.backgroundImage = `url(${getImagePath(button.icon)})`;
+                        btn.style.animationDelay = `${2 + index * 0.15}s`;
+
+                        if (button.url) {
+                            btn.onclick = () => window.location.href = button.url;
+                        }
+                        
+                        if (button.imageOnCursor) {
+                            btn.addEventListener('mouseenter', function() {
+                                currentTooltipButton = this;
+                                const img = new Image();
+                                img.src = getImagePath(button.imageOnCursor);
+                                
+                                img.onload = function() {
+                                    if (currentTooltipButton === btn) {
+                                        imageOnCursor.style.width = `${Math.min(this.width, window.innerWidth * 0.9)}px`;
+                                        imageOnCursor.style.height = `${Math.min(this.height, window.innerHeight * 0.9)}px`;
+                                        imageOnCursor.style.backgroundImage = `url(${this.src})`;
+                                        
+                                        imageOnCursor.classList.remove('hide');
+                                        imageOnCursor.classList.add('show');
+                                        
+                                        isTooltipVisible = true;
+                                    }
+                                };
+                            });
+                            
+                            btn.addEventListener('mouseleave', function() {
+                                if (currentTooltipButton === btn) {
+                                    imageOnCursor.classList.remove('show');
+                                    imageOnCursor.classList.add('hide');
+                                    isTooltipVisible = false;
+                                    currentTooltipButton = null;
+                                }
+                            });
+                        }
+
+                        if (button.panel === "top") {
+                            topPanel.appendChild(btn);
+                        } else if (button.panel === "bottom") {
+                            bottomPanel.appendChild(btn);
+                        }
+                    });
+                });
+        }
+        loadButtons();
+
+        const columns = Math.floor(window.innerWidth / 20);
+        const drops = Array(columns).fill(0);
+        let words = [];
+        let activeWord = null;
+        let wordPos = 0;
+        let lastWordTime = 0;
+        let lastWord = "";
+
+        fetch("list.txt")
+            .then(response => response.text())
+            .then(text => {
+                words = text.split("\n").map(word => word.trim()).filter(Boolean);
+            });
+
+        function drawMatrix() {
+            ctx.fillStyle = "rgba(0, 0, 0, 0.1)";
+            ctx.globalCompositeOperation = "destination-out";
+            ctx.fillRect(0, 0, matrixCanvas.width, matrixCanvas.height);
+            
+            ctx.globalCompositeOperation = "source-over";
+            
+            ctx.fillStyle = "#0f0";
+            ctx.font = "20px monospace";
+            
+            if (activeWord) {
+                const wordX = Math.floor(Math.random() * (columns - activeWord.length));
+                for (let i = 0; i < activeWord.length; i++) {
+                    ctx.fillText(activeWord[i], (wordX + i) * 20, wordPos * 20);
+                }
+                wordPos++;
+                if (wordPos > matrixCanvas.height / 20) {
+                    activeWord = null;
+                }
+            }
+
+            if (Math.random() > 0.99 && !activeWord && (Date.now() - lastWordTime > 5000)) {
+                let newWord;
+                do {
+                    newWord = words[Math.floor(Math.random() * words.length)];
+                } while (newWord === lastWord);
+
+                activeWord = newWord;
+                lastWord = newWord;
+                wordPos = 0;
+                lastWordTime = Date.now();
+            }
+
+            drops.forEach((y, x) => {
+                const text = Math.random() > 0.5 ? '1' : '0';
+                ctx.fillText(text, x * 20, y * 20);
+                
+                if (y * 20 > matrixCanvas.height && Math.random() > 0.975) {
+                    drops[x] = 0;
+                }
+                drops[x]++;
+            });
+        }
+
+        const matrixInterval = setInterval(drawMatrix, 50);
+        
+        document.addEventListener('touchmove', (e) => {
+            e.preventDefault();
+            const touch = e.touches[0];
+            const mouseEvent = new MouseEvent('mousemove', {
+                clientX: touch.clientX,
+                clientY: touch.clientY
+            });
+            document.dispatchEvent(mouseEvent);
+        });
+    </script>
+</body>
+</html>

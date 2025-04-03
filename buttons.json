@@ -1,0 +1,42 @@
+[
+    {
+        "panel": "top",
+        "icon": "svg/discord.svg",
+        "url": "https://discord.com/channels/@me/932390698857148457"
+    },
+    {
+        "panel": "top",
+        "icon": "svg/github.svg",
+        "url": "https://github.com/Inconnu1337"
+    },
+    {
+        "panel": "top",
+        "icon": "png/stories.png",
+        "url": "https://discord.gg/G6AgtpyBm4"
+    },
+    {
+        "panel": "bottom",
+        "icon": "png/fel.png",
+		"imageOnCursor": "png/fel_kek.png"
+    },
+    {
+        "panel": "bottom",
+        "icon": "png/eifall.png",
+		"imageOnCursor": "png/eifall_kek.png"
+    },
+    {
+        "panel": "bottom",
+        "icon": "png/agness.png",
+		"imageOnCursor": "png/agness_kek.png"
+    },
+    {
+        "panel": "bottom",
+        "icon": "png/snimbl.png",
+		"imageOnCursor": "png/snimbl_kek.png"
+    },
+    {
+        "panel": "bottom",
+        "icon": "png/liycheblue.png",
+		"imageOnCursor": "png/liycheblue_kek.png"
+    }
+]

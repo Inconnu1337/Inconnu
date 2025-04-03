@@ -218,7 +218,11 @@
         .button:hover::after {
             opacity: 1;
         }
-        
+		.button.button-hidden {
+			pointer-events: none;
+			opacity: 0;
+		}
+		
         .tooltip {
             position: fixed;
             display: none;
@@ -465,58 +469,66 @@
             return isURL(path) ? path : `./${path}`;
         }
 
-        function loadButtons() {
-            fetch("buttons.json")
-                .then(response => response.json())
-                .then(data => {
-                    data.forEach((button, index) => {
-                        const btn = document.createElement("div");
-                        btn.classList.add("button");
-                        btn.style.backgroundImage = `url(${getImagePath(button.icon)})`;
-                        btn.style.animationDelay = `${2 + index * 0.15}s`;
+		function loadButtons() {
+			fetch("buttons.json")
+				.then(response => response.json())
+				.then(data => {
+					data.forEach((button, index) => {
+						const btn = document.createElement("div");
+						btn.classList.add("button", "button-hidden");
+						btn.style.backgroundImage = `url(${getImagePath(button.icon)})`;
+						btn.style.animationDelay = `${2 + index * 0.15}s`;
 
-                        if (button.url) {
-                            btn.onclick = () => window.location.href = button.url;
-                        }
-                        
-                        if (button.imageOnCursor) {
-                            btn.addEventListener('mouseenter', function() {
-                                currentTooltipButton = this;
-                                const img = new Image();
-                                img.src = getImagePath(button.imageOnCursor);
-                                
-                                img.onload = function() {
-                                    if (currentTooltipButton === btn) {
-                                        imageOnCursor.style.width = `${Math.min(this.width, window.innerWidth * 0.9)}px`;
-                                        imageOnCursor.style.height = `${Math.min(this.height, window.innerHeight * 0.9)}px`;
-                                        imageOnCursor.style.backgroundImage = `url(${this.src})`;
-                                        
-                                        imageOnCursor.classList.remove('hide');
-                                        imageOnCursor.classList.add('show');
-                                        
-                                        isTooltipVisible = true;
-                                    }
-                                };
-                            });
-                            
-                            btn.addEventListener('mouseleave', function() {
-                                if (currentTooltipButton === btn) {
-                                    imageOnCursor.classList.remove('show');
-                                    imageOnCursor.classList.add('hide');
-                                    isTooltipVisible = false;
-                                    currentTooltipButton = null;
-                                }
-                            });
-                        }
+						// Добавляем обработчик окончания анимации
+						btn.addEventListener('animationend', function() {
+							btn.classList.remove('button-hidden');
+						});
 
-                        if (button.panel === "top") {
-                            topPanel.appendChild(btn);
-                        } else if (button.panel === "bottom") {
-                            bottomPanel.appendChild(btn);
-                        }
-                    });
-                });
-        }
+						if (button.url) {
+							btn.onclick = () => window.location.href = button.url;
+						}
+						
+						if (button.imageOnCursor) {
+							btn.addEventListener('mouseenter', function() {
+								// Проверяем, завершена ли анимация
+								if (this.classList.contains('button-hidden')) return;
+								
+								currentTooltipButton = this;
+								const img = new Image();
+								img.src = getImagePath(button.imageOnCursor);
+								
+								img.onload = function() {
+									if (currentTooltipButton === btn) {
+										imageOnCursor.style.width = `${Math.min(this.width, window.innerWidth * 0.9)}px`;
+										imageOnCursor.style.height = `${Math.min(this.height, window.innerHeight * 0.9)}px`;
+										imageOnCursor.style.backgroundImage = `url(${this.src})`;
+										
+										imageOnCursor.classList.remove('hide');
+										imageOnCursor.classList.add('show');
+										
+										isTooltipVisible = true;
+									}
+								};
+							});
+							
+							btn.addEventListener('mouseleave', function() {
+								if (currentTooltipButton === btn) {
+									imageOnCursor.classList.remove('show');
+									imageOnCursor.classList.add('hide');
+									isTooltipVisible = false;
+									currentTooltipButton = null;
+								}
+							});
+						}
+
+						if (button.panel === "top") {
+							topPanel.appendChild(btn);
+						} else if (button.panel === "bottom") {
+							bottomPanel.appendChild(btn);
+						}
+					});
+				});
+		}
         loadButtons();
 
         const columns = Math.floor(window.innerWidth / 20);

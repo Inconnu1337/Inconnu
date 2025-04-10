@@ -1,0 +1,338 @@
+:root {
+    --neon-green: #0f0;
+    --neon-purple: #A179DC;
+    --neon-glow: 0 0 10px rgba(0, 255, 0, 0.8);
+}
+
+body {
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    height: 100vh;
+    background-color: #111;
+    overflow: hidden;
+    perspective: 1000px;
+}
+
+.panel {
+    width: 100%;
+    height: 10vh;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(0, 0, 0, 0.5));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    position: relative;
+    opacity: 0; 
+    border-radius: 10px;
+    animation: panelSlideIn 1s forwards; 
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(5px);
+    z-index: 10;
+}
+
+.top-panel {
+    animation-delay: 0s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 20px;
+    position: relative;
+}
+
+.bottom-panel {
+    animation-delay: 1s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.center-panel {
+    flex: 1;
+    width: 100%;
+    background-color: #191919;
+    position: relative;
+    overflow: hidden;
+    opacity: 0;
+    border-radius: 15px;
+    animation: fadeIn 1s forwards;
+    animation-delay: 1s;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.6);
+    transform-style: preserve-3d;
+}
+
+.icon-text {
+    display: flex;
+    align-items: center;
+    opacity: 0;
+    animation: fadeInText 1s forwards;
+    animation-delay: 1.5s;
+    margin-right: auto;
+    margin-left: 10px;
+    margin-top: 3px;
+    flex-shrink: 0;
+    transition: all 0.3s ease;
+}
+
+.icon-text:hover {
+    transform: scale(1.05);
+}
+
+.icon-text img {
+    width: 50px;
+    height: 50px;
+    margin-right: 10px;
+    margin-left: 10px;
+    margin-top: 3px;
+    transition: all 0.3s ease;
+    filter: drop-shadow(var(--neon-glow));
+}
+
+.icon-text:hover img {
+    filter: drop-shadow(0 0 15px var(--neon-purple));
+}
+
+.icon-text span {
+    font-size: 27px;
+    font-weight: bold;
+    transition: all 0.3s ease;
+    background: linear-gradient(135deg, #ffffff, #defadf);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    text-shadow: 0 0 10px rgba(0, 255, 157, 0.5);
+    position: relative;
+}
+
+.icon-text span::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -2px;
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, #00ff9d, #00b8ff, transparent);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.icon-text:hover span::after {
+    opacity: 1;
+}
+
+@keyframes panelSlideIn {
+    0% {
+        transform: translateY(-100%);
+        opacity: 0;
+    }
+    100% {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+        transform: translateZ(50px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateZ(0);
+    }
+}
+
+@keyframes fadeInText {
+    0% {
+        opacity: 0;
+        transform: translateX(-20px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes fadeInButton {
+    0% {
+        opacity: 0;
+        transform: scale(0.8) rotateY(90deg);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1) rotateY(0);
+    }
+}
+
+.button {
+	width: 45px;
+	height: 45px;
+	background-size: contain;
+	background-repeat: no-repeat;
+	background-position: center;
+	cursor: pointer;
+	border-radius: 0;
+	border: none;
+	transition: all 0.3s ease;
+	opacity: 0;
+	animation: fadeInButton 0.5s forwards;
+	animation-delay: 2s;
+	margin-left: 5px;
+	margin-right: 5px;
+	position: relative;
+	overflow: visible;
+	box-shadow: none;
+}
+
+.button:hover {
+	transform: scale(1.15) translateZ(10px);
+	filter: 
+		drop-shadow(0 0 2px var(--neon-green))
+		drop-shadow(0 0 4px var(--neon-green))
+		drop-shadow(0 0 6px var(--neon-green));
+	border-color: transparent;
+}
+
+.button::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: radial-gradient(circle at center, rgba(0, 255, 0, 0.3), transparent 70%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.button:hover::after {
+    opacity: 1;
+}
+.button.button-hidden {
+	pointer-events: none;
+	opacity: 0;
+}
+
+.tooltip {
+    position: fixed;
+    display: none;
+    border: 2px solid var(--neon-green);
+    pointer-events: none;
+    transition: all 0.2s ease;
+    border-radius: 15px;
+    background-color: rgba(0, 0, 0, 0.7);
+    box-shadow: 0 0 20px rgba(0, 255, 0, 0.6);
+    z-index: 1000;
+    transform: translateZ(20px);
+    opacity: 0;
+    backdrop-filter: blur(2px);
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    padding: 10px;
+    max-width: 90vw;
+    max-height: 90vh;
+}
+
+.tooltip.show {
+    display: block;
+    animation: tooltipFadeIn 0.2s forwards;
+}
+
+.tooltip.hide {
+    animation: tooltipFadeOut 0.2s forwards;
+}
+
+@keyframes tooltipFadeIn {
+    0% {
+        opacity: 0;
+        transform: scale(0.8) translateZ(0);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1) translateZ(20px);
+    }
+}
+
+@keyframes tooltipFadeOut {
+    0% {
+        opacity: 1;
+        transform: scale(1) translateZ(20px);
+    }
+    100% {
+        opacity: 0;
+        transform: scale(0.8) translateZ(0);
+        display: none;
+    }
+}
+
+.matrix {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    font-family: monospace;
+    color: var(--neon-green);
+    white-space: nowrap;
+    overflow: hidden;
+    font-size: 20px;
+    background-color: #0a0a0a;
+    transform-style: preserve-3d;
+    transition: transform 0.3s ease-out;
+    will-change: transform;
+}
+
+.parallax-layer {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    transition: transform 0.3s ease-out;
+    will-change: transform;
+}
+
+@media (max-width: 768px) {
+    .panel {
+        height: 8vh;
+    }
+    
+    .icon-text img {
+        width: 40px;
+        height: 40px;
+    }
+    
+    .icon-text span {
+        font-size: 20px;
+    }
+    
+    .button {
+        width: 40px;
+        height: 40px;
+        margin: 0 3px;
+    }
+    
+    .tooltip {
+        max-width: 80vw;
+        max-height: 80vh;
+    }
+}
+
+@media (max-width: 480px) {
+    .icon-text span {
+        display: none;
+    }
+    
+    .button {
+        width: 35px;
+        height: 35px;
+    }
+    
+    .bottom-panel {
+        justify-content: space-around;
+    }
+}

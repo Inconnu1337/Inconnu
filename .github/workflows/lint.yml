@@ -17,7 +17,7 @@ jobs:
 
       - name: Install linters
         run: |
-          npm install -g eslint stylelint htmlhint jsonlint
+          npm install -g eslint stylelint stylelint-config-standard htmlhint jsonlint
 
       - name: Run HTMLHint
         run: htmlhint "**/*.html"

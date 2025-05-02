@@ -16,23 +16,7 @@
     },
     {
         "panel": "bottom",
-        "icon": "png/fel.png"
-    },
-    {
-        "panel": "bottom",
         "icon": "png/eifall.png",
 		"imageOnCursor": "png/eifall_kek.png"
-    },
-    {
-        "panel": "bottom",
-        "icon": "png/agness.png"
-    },
-    {
-        "panel": "bottom",
-        "icon": "png/snimbl.png"
-    },
-    {
-        "panel": "bottom",
-        "icon": "png/liycheblue.png"
     }
 ]

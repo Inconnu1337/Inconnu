@@ -35,5 +35,6 @@ Feels like I just do whatever I want. I'm too stubborn to stop, so I end up fixi
 ---
 
 ## 📌 Current Focus
-Now I'm not doing anything except contributing to https://github.com/MetalSage/space-stories-cm14
+Now I'm not doing anything except contributing to https://github.com/MetalSage/space-stories-cm14  
 I am learning a bit of C++ and exploring databases but only at a very basic level for now
+

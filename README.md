@@ -1,7 +1,7 @@
 <h1 align="center">Hi, I'm Inconnu</h1>
 
 <p align="center">
-  <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&pause=2000&color=8CCEFF&center=true&vCenter=true&width=600&lines=Hobby+Developer;C%23 | +.NET+9 | +Python | +Java;" />
+  <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&pause=2000&color=8CCEFF&center=true&vCenter=true&width=600&lines=Hobby+Developer;C%23+%7C+.NET+9+%7C+Python+%7C+Java" />
 </p>
 
 <p align="center">

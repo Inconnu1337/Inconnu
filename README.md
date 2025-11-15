@@ -5,7 +5,7 @@
 </p>
 
 <p align="center">
-  <img src="https://cataas.com/cat/gif" width="220">
+  <img src="https://cataas.com/cat/gif?ts=1" width="220"/>
 </p>
 
 ---
